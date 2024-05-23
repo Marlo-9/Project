@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Project.Models;
 using Project.Views.Pages;
 
 namespace Project.ViewModels;

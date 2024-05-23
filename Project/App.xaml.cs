@@ -16,23 +16,6 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        /*using (DataBaseContext db = new())
-        {
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-
-            db.Users.Add(new User()
-            {
-                Login = "login1",
-                Password = "pass1",
-                Name = "Имя1",
-                Surname = "Фамилия1",
-                Patronymic = "Отчество1",
-                Phone = "87006005040"
-            });
-            db.SaveChanges();
-        }*/
-
         MainWindow window = new()
         {
             DataContext = new MainViewModel()

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Controls;
-using Advanced.Tools;
+﻿using Advanced.Tools;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +6,8 @@ using Project.Models;
 using Project.Tools.Enums;
 using Project.Views.Pages;
 using Project.Views.Pages.Client;
-using Project.Views.Pages.Employee;
-using Notify = Project.Tools.Notify;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
 
 namespace Project.ViewModels;
 
@@ -40,7 +38,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
     {
         if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
         {
-            Notify.ShowWarning("Заполнены не все поля");
+            Notify.ShowWarning("Заполнены не все поля", "Внимание");
             return;
         }
 
@@ -49,19 +47,29 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
         _mainViewModel.IsLoading = true;
         using (DataBaseContext db = new())
         {
-            await db.Users.LoadAsync();
-            users = db.Users.Local.ToList();
+            if (await db.Database.CanConnectAsync())
+            {
+                await db.Users.LoadAsync();
+                users = db.Users.Local.ToList();
+            }
+            else
+            {
+                Notify.ShowError("Не удаётся подключится к базе данных", "Ошибка соединения");
+                
+                _mainViewModel.IsLoading = false;
+                return;
+            }
         }
         
         User? user = users.Find(u => u.Login.Equals(Login) && u.Password.Equals(Password));
             
         if (user != null)
         {
-            Notify.ShowSuccess("Вы авторизовались");
+            Notify.ShowSuccess($"Вы вошли как {user.Name} {user.Surname} {user.Patronymic}", "Успех");
 
             if (user.Role == UserRole.User)
             {
-                _mainViewModel.CurrentViewModel = new UserMainPageViewModel(_mainViewModel, new Views.Pages.Client.MainPage())
+                _mainViewModel.CurrentViewModel = new UserMainPageViewModel(_mainViewModel, new MainPage())
                 {
                     User = user
                 };
@@ -76,7 +84,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
         }
         else
         {
-            Notify.ShowError("Не верный логин и/или пароль");
+            Notify.ShowError("Не верный логин и/или пароль", "Ошибка");
         }
         
         _mainViewModel.IsLoading = false;
@@ -89,43 +97,53 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             || string.IsNullOrWhiteSpace(PasswordConfirm)|| string.IsNullOrWhiteSpace(Name)
             || string.IsNullOrWhiteSpace(Surname)|| string.IsNullOrWhiteSpace(Phone))
         {
-            Notify.ShowWarning("Заполнены не все поля");
+            Notify.ShowWarning("Заполнены не все поля", "Внимание");
             return;
         }
 
         if (!Login.IsLength(3, 20))
         {
-            Notify.ShowWarning("Минимальная длинна логина 3, максимальна 20");
+            Notify.ShowWarning("Минимальная длинна логина 3, максимальна 20", "Внимание");
             return;
         }
 
         if (!Password.IsLength(6, 40))
         {
-            Notify.ShowWarning("Минимальная длинна пароля 6, максимальна 40");
+            Notify.ShowWarning("Минимальная длинна пароля 6, максимальна 40", "Внимание");
             return;
         }
 
         if (!Phone.IsCorrectPhone())
         {
-            Notify.ShowWarning("Не корректный номер телефона");
+            Notify.ShowWarning("Не корректный номер телефона", "Внимание");
             return;
         }
 
         if (!Password.Equals(PasswordConfirm))
         {
-            Notify.ShowWarning("Пароли не совпадают");
+            Notify.ShowWarning("Пароли не совпадают", "Внимание");
             return;
         }
             
         _mainViewModel.IsLoading = true;
         using (DataBaseContext db = new())
         {
-            await db.Users.LoadAsync();
+            if (await db.Database.CanConnectAsync())
+            {
+                await db.Users.LoadAsync();
+            }
+            else
+            {
+                Notify.ShowError("Не удаётся подключится к базе данных", "Ошибка соединения");
+                _mainViewModel.IsLoading = false;
+                return;
+            }
+
             List<User> users = db.Users.Local.ToList();
 
             if (users.Any(u => u.Login.Equals(Login)))
             {
-                Notify.ShowWarning("Пользователь с таким логином уже существует");
+                Notify.ShowWarning("Пользователь с таким логином уже существует", "Внимание");
                 return;
             }
 
@@ -142,9 +160,9 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             db.Users.Add(user);
             await db.SaveChangesAsync();
             
-            Notify.ShowSuccess("Вы зарегистрировались");
+            Notify.ShowSuccess($"Вы зарегистрировались как {user.Name} {user.Surname} {user.Patronymic}", "Успех");
             
-            _mainViewModel.CurrentViewModel = new UserMainPageViewModel(_mainViewModel, new Views.Pages.Client.MainPage())
+            _mainViewModel.CurrentViewModel = new UserMainPageViewModel(_mainViewModel, new MainPage())
             {
                 User = user
             };

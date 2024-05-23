@@ -27,6 +27,7 @@
 
         <ui:SnackbarPresenter x:Name="MainSnackbarPresenter"
                               Grid.Row="1" />
+
         <ProgressBar Grid.Row="1"
                      VerticalAlignment="Bottom"
                      Visibility="{Binding ProgressBarVisibility}"

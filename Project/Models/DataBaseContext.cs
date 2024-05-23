@@ -8,6 +8,6 @@ public class DataBaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(@"Host=localhost;Port=5432;Database=Project;Username=Admin;Password=Password");
+        optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=Project;Trusted_Connection=True;TrustServerCertificate=True"); // Для локальной базы данных
     }
 }

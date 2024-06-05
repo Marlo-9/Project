@@ -11,140 +11,144 @@
                                        IsDesignTimeCreatable=True}"
       d:DesignWidth="900"
       d:DesignHeight="600"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <ScrollViewer Grid.Row="1"
-                      Grid.Column="1"
-                      HorizontalScrollBarVisibility="Disabled">
-            <Grid MinWidth="240">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+            <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition MinWidth="220" />
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition MinWidth="220" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1"
+                      Grid.Column="1"
+                      MinWidth="240"
+                      Margin="0,20,0,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="220" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition MinWidth="220" />
+                    </Grid.ColumnDefinitions>
 
-                <ui:TextBlock Grid.Row="0"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="3"
-                              HorizontalAlignment="Center"
-                              Text="Регистрация"
-                              Appearance="Secondary"
-                              FontTypography="Title" />
+                    <ui:TextBlock Grid.Row="0"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="3"
+                                  HorizontalAlignment="Center"
+                                  Text="Регистрация"
+                                  FontTypography="Title" />
 
-                <StackPanel Grid.Row="2"
-                            Grid.Column="0"
-                            Orientation="Vertical">
-                    <Label Content="Логин"
-                           Target="{Binding ElementName=LoginBox}" />
-                    <ui:TextBox x:Name="LoginBox"
-                                Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <StackPanel Grid.Row="2"
+                                Grid.Column="0"
+                                Orientation="Vertical">
+                        <Label Content="Логин"
+                               Target="{Binding ElementName=LoginBox}" />
+                        <ui:TextBox x:Name="LoginBox"
+                                    Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
 
-                <StackPanel Grid.Row="2"
-                            Grid.Column="2"
-                            Orientation="Vertical">
-                    <Label Content="Телефон"
-                           Target="{Binding ElementName=PhoneBox}" />
-                    <ui:TextBox x:Name="PhoneBox"
-                                Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <StackPanel Grid.Row="2"
+                                Grid.Column="2"
+                                Orientation="Vertical">
+                        <Label Content="Телефон"
+                               Target="{Binding ElementName=PhoneBox}" />
+                        <ui:TextBox x:Name="PhoneBox"
+                                    Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
 
-                <StackPanel Grid.Row="4"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="3"
-                            Orientation="Vertical">
-                    <Label Content="Имя"
-                           Target="{Binding ElementName=NameBox}" />
-                    <ui:TextBox x:Name="NameBox"
-                                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <StackPanel Grid.Row="4"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Orientation="Vertical">
+                        <Label Content="Имя"
+                               Target="{Binding ElementName=NameBox}" />
+                        <ui:TextBox x:Name="NameBox"
+                                    Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
 
-                <StackPanel Grid.Row="6"
-                            Grid.Column="0"
-                            Orientation="Vertical">
-                    <Label Content="Фамилия"
-                           Target="{Binding ElementName=SurNameBox}" />
-                    <ui:TextBox x:Name="SurNameBox"
-                                Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <StackPanel Grid.Row="6"
+                                Grid.Column="0"
+                                Orientation="Vertical">
+                        <Label Content="Фамилия"
+                               Target="{Binding ElementName=SurNameBox}" />
+                        <ui:TextBox x:Name="SurNameBox"
+                                    Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
 
-                <StackPanel Grid.Row="6"
-                            Grid.Column="2"
-                            Orientation="Vertical">
-                    <Label Content="Отчество"
-                           Target="{Binding ElementName=PatronymicBox}" />
-                    <ui:TextBox x:Name="PatronymicBox"
-                                Text="{Binding Patronymic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <StackPanel Grid.Row="6"
+                                Grid.Column="2"
+                                Orientation="Vertical">
+                        <Label Content="Отчество"
+                               Target="{Binding ElementName=PatronymicBox}" />
+                        <ui:TextBox x:Name="PatronymicBox"
+                                    Text="{Binding Patronymic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
 
-                <StackPanel Grid.Row="8"
-                            Grid.Column="0"
-                            Orientation="Vertical">
-                    <Label Content="Пароль"
-                           Target="{Binding ElementName=PasswordBox}" />
-                    <ui:PasswordBox x:Name="PasswordBox"
-                                    Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <StackPanel Grid.Row="8"
+                                Grid.Column="0"
+                                Orientation="Vertical">
+                        <Label Content="Пароль"
+                               Target="{Binding ElementName=PasswordBox}" />
+                        <ui:PasswordBox x:Name="PasswordBox"
+                                        Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
 
-                <StackPanel Grid.Row="8"
-                            Grid.Column="2"
-                            Orientation="Vertical">
-                    <Label Content="Подтверждение пароля"
-                           Target="{Binding ElementName=PasswordConfirmBox}" />
-                    <ui:PasswordBox x:Name="PasswordConfirmBox"
-                                    Password="{Binding PasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <StackPanel Grid.Row="8"
+                                Grid.Column="2"
+                                Orientation="Vertical">
+                        <Label Content="Подтверждение пароля"
+                               Target="{Binding ElementName=PasswordConfirmBox}" />
+                        <ui:PasswordBox x:Name="PasswordConfirmBox"
+                                        Password="{Binding PasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
 
-                <ui:Button Grid.Row="10"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="3"
-                           MaxWidth="200"
-                           HorizontalAlignment="Stretch"
-                           Appearance="Primary"
-                           Command="{Binding UserRegistrationCommand}"
-                           Content="Зарегистрироваться"
-                           IsDefault="True" />
+                    <ui:Button Grid.Row="10"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               MaxWidth="200"
+                               HorizontalAlignment="Stretch"
+                               Appearance="Primary"
+                               Command="{Binding UserRegistrationCommand}"
+                               Content="Зарегистрироваться"
+                               IsDefault="True" />
 
-                <StackPanel Grid.Row="12"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="3"
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal">
-                    <ui:TextBlock Margin="0,0,10,0"
-                                  VerticalAlignment="Center"
-                                  Appearance="Tertiary"
-                                  FontTypography="Body"
-                                  Text="Есть аккаунт?" />
-                    <ui:HyperlinkButton Padding="6,4"
-                                        Command="{Binding OpenLoginPageCommand}"
-                                        Content="Войти" />
-                </StackPanel>
+                    <StackPanel Grid.Row="12"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                        <ui:TextBlock Margin="0,0,10,0"
+                                      VerticalAlignment="Center"
+                                      Appearance="Tertiary"
+                                      FontTypography="Body"
+                                      Text="Есть аккаунт?" />
+                        <ui:HyperlinkButton Padding="6,4"
+                                            Command="{Binding OpenLoginPageCommand}"
+                                            Content="Войти" />
+                    </StackPanel>
+                </Grid>
             </Grid>
         </ScrollViewer>
     </Grid>

@@ -1,9 +1,10 @@
-﻿<ui:FluentWindow x:Class="Project.Views.Windows.MainWindow"
+﻿<ui:FluentWindow x:Class="Project.Views.Windows.AuthenticationWindow"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:local="clr-namespace:Project"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:local="clr-namespace:Project.Views.Windows"
+                 xmlns:tools="clr-namespace:Project.Tools"
                  xmlns:vm="clr-namespace:Project.ViewModels"
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  Title="MainWindow"
@@ -14,26 +15,28 @@
                  ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
                  ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  WindowStartupLocation="CenterScreen"
-                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  mc:Ignorable="d">
+    <ui:FluentWindow.Resources>
+        <tools:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+    </ui:FluentWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Title="{Binding CurrentViewModel.PageTitle}"
+        <ui:TitleBar Title="{Binding Page.Title}"
                      Grid.Row="0" />
 
         <Frame Grid.Row="1"
-               Content="{Binding CurrentViewModel.Page}" />
+               Content="{Binding Page}" />
 
-        <ui:SnackbarPresenter x:Name="MainSnackbarPresenter"
+        <ui:SnackbarPresenter x:Name="AuthenticationSnackbarPresenter"
                               Grid.Row="1" />
 
         <ProgressBar Grid.Row="1"
                      VerticalAlignment="Bottom"
-                     Visibility="{Binding ProgressBarVisibility}"
+                     Visibility="{Binding IsLoading, Converter={StaticResource VisibilityConverter}}"
                      IsIndeterminate="True" />
     </Grid>
 </ui:FluentWindow>

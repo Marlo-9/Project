@@ -1,17 +1,21 @@
-﻿using Advanced.Tools;
+﻿using System.Windows;
+using System.Windows.Controls;
+using Advanced.Tools;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
 using Project.Tools.Enums;
+using Project.ViewModels.Client;
+using Project.ViewModels.Employee;
 using Project.Views.Pages;
 using Project.Views.Pages.Client;
-using Wpf.Ui;
-using Wpf.Ui.Controls;
+using Project.Views.Windows;
+using MainPage = Project.Views.Pages.Employee.MainPage;
 
 namespace Project.ViewModels;
 
-public partial class AuthenticationViewModel(MainViewModel mainViewModel, object startPage) : PageBaseViewModel(mainViewModel, startPage)
+public partial class AuthenticationViewModel : WindowBaseViewModel
 {
     [ObservableProperty] private string _login = "";
     [ObservableProperty] private string _password = "";
@@ -20,6 +24,18 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
     [ObservableProperty] private string _name = "";
     [ObservableProperty] private string _surname = "";
     [ObservableProperty] private string _patronymic = "";
+    [ObservableProperty] private Page _page;
+
+    partial void OnPageChanged(Page value)
+    {
+        Page.DataContext = this;
+    }
+
+    public AuthenticationViewModel(Page startPage)
+    {
+        Page = startPage;
+        Page.DataContext = this;
+    }
 
     [RelayCommand]
     private void OpenLoginPage()
@@ -44,7 +60,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
 
         List<User> users;
 
-        _mainViewModel.IsLoading = true;
+        IsLoading = true;
         using (DataBaseContext db = new())
         {
             if (await db.Database.CanConnectAsync())
@@ -56,7 +72,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             {
                 Notify.ShowError("Не удаётся подключится к базе данных", "Ошибка соединения");
                 
-                _mainViewModel.IsLoading = false;
+                IsLoading = false;
                 return;
             }
         }
@@ -65,21 +81,31 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             
         if (user != null)
         {
-            Notify.ShowSuccess($"Вы вошли как {user.Name} {user.Surname} {user.Patronymic}", "Успех");
-
-            if (user.Role == UserRole.User)
+            if (user.IsCanLogin)
             {
-                _mainViewModel.CurrentViewModel = new UserMainPageViewModel(_mainViewModel, new MainPage())
+                Notify.ShowSuccess($"Вы вошли как {user.Name} {user.Surname} {user.Patronymic}", "Успех");
+
+                if (user.Role == UserRole.User)
                 {
-                    User = user
-                };
+                    /*_mainViewModel.CurrentViewModel = new UserMainPageViewModel(_mainViewModel, new MainPage())
+                    {
+                        User = user
+                    };*/
+                }
+                else
+                {
+                    EmployeeWindow window = new();
+                    window.DataContext = new EmployeeMainViewModel(window.RootNavigationView, user);
+                    
+                    Application.Current.MainWindow!.Close();
+                    Application.Current.MainWindow = window;
+                    
+                    window.Show();
+                }
             }
             else
             {
-                _mainViewModel.CurrentViewModel = new EmployeeMainPageViewModel(_mainViewModel, new Views.Pages.Employee.MainPage())
-                {
-                    User = user
-                };
+                Notify.ShowWarning("Эта учётная запись не активирована", "Внимание");
             }
         }
         else
@@ -87,7 +113,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             Notify.ShowError("Не верный логин и/или пароль", "Ошибка");
         }
         
-        _mainViewModel.IsLoading = false;
+        IsLoading = false;
     }
 
     [RelayCommand]
@@ -125,7 +151,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             return;
         }
             
-        _mainViewModel.IsLoading = true;
+        IsLoading = true;
         using (DataBaseContext db = new())
         {
             if (await db.Database.CanConnectAsync())
@@ -135,7 +161,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             else
             {
                 Notify.ShowError("Не удаётся подключится к базе данных", "Ошибка соединения");
-                _mainViewModel.IsLoading = false;
+                IsLoading = false;
                 return;
             }
 
@@ -160,12 +186,7 @@ public partial class AuthenticationViewModel(MainViewModel mainViewModel, object
             db.Users.Add(user);
             await db.SaveChangesAsync();
             
-            Notify.ShowSuccess($"Вы зарегистрировались как {user.Name} {user.Surname} {user.Patronymic}", "Успех");
-            
-            _mainViewModel.CurrentViewModel = new UserMainPageViewModel(_mainViewModel, new MainPage())
-            {
-                User = user
-            };
+            Notify.ShowSuccess($"Вы зарегистрировались как {user.Name} {user.Surname} {user.Patronymic}, вы сможете авторизоваться после активации учётной записи", "Успех");
         }
     }
 }

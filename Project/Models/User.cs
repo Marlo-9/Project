@@ -12,7 +12,12 @@ public partial class User : ObservableObject
     [ObservableProperty] private string _surname = "";
     [ObservableProperty] private string? _patronymic;
     [ObservableProperty] private string? _phone;
-    [ObservableProperty] private UserRole _role = UserRole.User;
-    
-    public User() {}
+    [ObservableProperty] private UserRole _role;
+    [ObservableProperty] private bool _isCanLogin;
+
+    public User()
+    {
+        IsCanLogin = false;
+        Role = UserRole.User;
+    }
 }

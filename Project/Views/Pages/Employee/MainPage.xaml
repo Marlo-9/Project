@@ -5,12 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Project.Views.Pages.Employee"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-      xmlns:vm="clr-namespace:Project.ViewModels"
+      xmlns:vm="clr-namespace:Project.ViewModels.Employee"
       Title="Главная страница сотрудник"
-      d:DataContext="{d:DesignInstance vm:EmployeeMainPageViewModel,
+      d:DataContext="{d:DesignInstance vm:EmployeeMainViewModel,
                                        IsDesignTimeCreatable=True}"
       d:DesignWidth="800"
       d:DesignHeight="450"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d">
     <Grid />
 </Page>

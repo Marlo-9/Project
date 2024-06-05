@@ -3,6 +3,7 @@ using System.Data;
 using System.Windows;
 using Project.Models;
 using Project.ViewModels;
+using Project.Views.Pages;
 using Project.Views.Windows;
 
 namespace Project;
@@ -15,10 +16,16 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-
-        MainWindow window = new()
+        
+        using (DataBaseContext db = new())
         {
-            DataContext = new MainViewModel()
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+        }
+
+        AuthenticationWindow window = new()
+        {
+            DataContext = new AuthenticationViewModel(new LoginPage())
         };
         
         window.Show();

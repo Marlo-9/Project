@@ -6,22 +6,22 @@ namespace Project.ViewModels;
 
 public abstract partial class PageBaseViewModel : ObservableObject
 {
-    [ObservableProperty] private string _pageTitle = "";
-    [ObservableProperty] private object _page;
+    [ObservableProperty] private Page? _page;
     [ObservableProperty] private User? _user;
     
-    protected MainViewModel _mainViewModel;
-
-    partial void OnPageChanged(object value)
+    partial void OnPageChanged(Page? value)
     {
-        PageTitle = ((Page)Page).Title;
-        ((Page)Page).DataContext = this;
+        Page!.DataContext = this;
     }
 
-    protected PageBaseViewModel(MainViewModel mainViewModel, object startPage)
+    protected PageBaseViewModel()
     {
-        _mainViewModel = mainViewModel;
+        
+    }
+    
+    protected PageBaseViewModel(Page startPage)
+    {
         Page = startPage;
-        ((Page)Page).DataContext = this;
+        Page.DataContext = this;
     }
 }

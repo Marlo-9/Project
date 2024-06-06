@@ -4,7 +4,7 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:local="clr-namespace:Project.Views.Windows"
-                 xmlns:tools="clr-namespace:Project.Tools"
+                 xmlns:con="clr-namespace:Project.Tools.Converters"
                  xmlns:vm="clr-namespace:Project.ViewModels"
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  Title="MainWindow"
@@ -17,7 +17,7 @@
                  WindowStartupLocation="CenterScreen"
                  mc:Ignorable="d">
     <ui:FluentWindow.Resources>
-        <tools:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+        <con:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </ui:FluentWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>

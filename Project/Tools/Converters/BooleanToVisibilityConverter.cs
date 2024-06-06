@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace Project.Tools;
+namespace Project.Tools.Converters;
 
 [ValueConversion(typeof(bool), typeof(Visibility))]
 public class BooleanToVisibilityConverter : IValueConverter

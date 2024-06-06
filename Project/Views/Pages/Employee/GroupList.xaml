@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Project.Views.Pages.Employee"
-      xmlns:tools="clr-namespace:Project.Tools"
+      xmlns:con="clr-namespace:Project.Tools.Converters"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:vm="clr-namespace:Project.ViewModels.Employee"
       Title="Группы"
@@ -16,7 +16,7 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d">
     <Page.Resources>
-        <tools:ObjectToVisibilityConverter x:Key="VisibilityConverter" />
+        <con:ObjectToVisibilityConverter x:Key="VisibilityConverter" />
     </Page.Resources>
     <Grid Margin="8">
         <Grid.RowDefinitions>
@@ -46,6 +46,8 @@
         <Separator Grid.Row="1"
                    VerticalAlignment="Center" />
         <ui:ListView Grid.Row="2"
+                     HorizontalContentAlignment="Stretch"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      SelectedItem="{Binding SelectedGroup}"
                      ItemsSource="{Binding Groups}">
             <ui:ListView.ItemTemplate>
@@ -53,13 +55,12 @@
                     <Grid Margin="8,4,4,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"
-                                              MinWidth="30" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="5" />
+                                              MinWidth="28" />
+                            <ColumnDefinition Width="12" />
                             <ColumnDefinition />
+                            <ColumnDefinition Width="6" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="6" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <ui:TextBlock Grid.Column="0"
@@ -68,24 +69,33 @@
                                       Appearance="Tertiary"
                                       FontTypography="Body"
                                       Text="{Binding Id}" />
-                        <ui:TextBlock Grid.Column="2"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Center"
-                                      Appearance="Secondary"
-                                      FontTypography="Subtitle"
-                                      Text="{Binding Name}" />
-                        <ui:TextBlock Grid.Column="4"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Center"
-                                      Appearance="Secondary"
-                                      FontTypography="Body"
-                                      Text="{Binding Students.Count, StringFormat={}({0})}" />
-                        <ui:Button Grid.Column="5"
+                        <Grid Grid.Column="2"
+                              HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="6" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Center"
+                                          Appearance="Secondary"
+                                          FontTypography="Subtitle"
+                                          TextTrimming="CharacterEllipsis"
+                                          Text="{Binding Name}" />
+                            <ui:TextBlock Grid.Column="2"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Appearance="Secondary"
+                                          FontTypography="Body"
+                                          Text="{Binding Students.Count, StringFormat={}({0})}" />
+                        </Grid>
+                        <ui:Button Grid.Column="4"
                                    Appearance="Secondary"
                                    Command="{Binding DataContext.EditGroupCommand, RelativeSource={RelativeSource AncestorType={x:Type Page}}}"
                                    CommandParameter="{Binding}"
                                    Icon="{ui:SymbolIcon Edit28}" />
-                        <ui:Button Grid.Column="7"
+                        <ui:Button Grid.Column="6"
                                    Appearance="Danger"
                                    Command="{Binding DataContext.DeleteGroupCommand, RelativeSource={RelativeSource AncestorType={x:Type Page}}}"
                                    CommandParameter="{Binding}"
@@ -133,8 +143,10 @@
                                   Appearance="Tertiary"
                                   FontTypography="BodyStrong"
                                   Text="Название:" />
-                    <ui:TextBlock VerticalAlignment="Center"
+                    <ui:TextBlock MaxWidth="300"
+                                  VerticalAlignment="Center"
                                   Appearance="Secondary"
+                                  TextTrimming="CharacterEllipsis"
                                   FontTypography="Subtitle"
                                   Text="{Binding SelectedGroup.Name}" />
                 </StackPanel>

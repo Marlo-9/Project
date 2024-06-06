@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace Project.Tools;
+namespace Project.Tools.Converters;
 
 [ValueConversion(typeof(object), typeof(Visibility))]
 public class ObjectToVisibilityConverter : IValueConverter

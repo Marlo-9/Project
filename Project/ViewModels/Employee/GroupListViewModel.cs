@@ -8,6 +8,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
 using Project.Tools;
+using Project.Tools.Dialog;
+using Project.Tools.Enums;
 using Project.ViewModels.Employee.Modal;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
@@ -42,42 +44,13 @@ public partial class GroupListViewModel : PageBaseViewModel
     [RelayCommand]
     private async Task EditGroup(Group group)
     {
-        StackPanel panel = new();
-        TextBox textBox = new()
-        {
-            Name = "NameBox",
-            Text = group.Name
-        };
-        Label label = new()
-        {
-            Content = "Название"
-        };
+        DialogField field = new("Название", "Name", group.Name);
 
-        label.SetBinding(Label.TargetProperty, new Binding()
-        {
-            ElementName = textBox.Name
-        });
-
-        panel.Children.Add(label);
-        panel.Children.Add(textBox);
-
-        ContentDialog dialog = new(Tools.Message.ContentPresenter);
-        
-        dialog.SetCurrentValue(ContentDialog.TitleProperty, "Редактирование группы: " + group.Name);
-        dialog.SetCurrentValue(ContentDialog.ContentProperty, panel);
-        dialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "Отмена");
-        dialog.SetCurrentValue(ContentDialog.PrimaryButtonTextProperty, "Сохранить");
-        dialog.SetCurrentValue(ContentDialog.MinWidthProperty, (double)420);
-        dialog.SetCurrentValue(ContentDialog.DialogWidthProperty, (double)420);
-        dialog.SetCurrentValue(ContentDialog.DialogHeightProperty, (double)250);
-
-        ContentDialogResult result = await dialog.ShowAsync();
-
-        if (result == ContentDialogResult.Primary)
+        if (await UserDialog.ShowGroupEditDialog(field.GetContent(), DialogType.Edit, group.Name) == ContentDialogResult.Primary)
         {
             _parentDataContext.IsLoading = true;
 
-            group.Name = textBox.Text;
+            group.Name = field.GetText();
             await DataBase.TryUpdateEntityAsync(group);
 
             _parentDataContext.IsLoading = false;
@@ -89,43 +62,15 @@ public partial class GroupListViewModel : PageBaseViewModel
     [RelayCommand]
     private async Task CreateGroup()
     {
-        StackPanel panel = new();
-        TextBox textBox = new()
-        {
-            Name = "NameBox"
-        };
-        Label label = new()
-        {
-            Content = "Название"
-        };
+        DialogField field = new("Название", "Name");
 
-        label.SetBinding(Label.TargetProperty, new Binding()
-        {
-            ElementName = textBox.Name
-        });
-
-        panel.Children.Add(label);
-        panel.Children.Add(textBox);
-
-        ContentDialog dialog = new(Tools.Message.ContentPresenter);
-        
-        dialog.SetCurrentValue(ContentDialog.TitleProperty, "Создание группы");
-        dialog.SetCurrentValue(ContentDialog.ContentProperty, panel);
-        dialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "Отмена");
-        dialog.SetCurrentValue(ContentDialog.PrimaryButtonTextProperty, "Создать");
-        dialog.SetCurrentValue(ContentDialog.MinWidthProperty, (double)420);
-        dialog.SetCurrentValue(ContentDialog.DialogWidthProperty, (double)420);
-        dialog.SetCurrentValue(ContentDialog.DialogMaxHeightProperty, (double)250);
-
-        ContentDialogResult result = await dialog.ShowAsync();
-
-        if (result == ContentDialogResult.Primary)
+        if (await UserDialog.ShowGroupEditDialog(field.GetContent(), DialogType.Create) == ContentDialogResult.Primary)
         {
             _parentDataContext.IsLoading = true;
 
             await DataBase.TryUpdateEntityAsync(new Group()
             {
-                Name = textBox.Text
+                Name = field.GetText()
             });
 
             _parentDataContext.IsLoading = false;

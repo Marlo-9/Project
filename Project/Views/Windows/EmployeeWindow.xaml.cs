@@ -11,6 +11,6 @@ public partial class EmployeeWindow : FluentWindow
     {
         InitializeComponent();
         Notify.SetGlobalSnackbarPresenter(AuthenticationSnackbarPresenter);
-        Message.SetGlobalContentContentPresenter(AuthenticationContentDialog);
+        Message.SetGlobalContentPresenter(AuthenticationContentDialog);
     }
 }

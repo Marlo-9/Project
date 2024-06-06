@@ -61,7 +61,7 @@ public partial class GroupListViewModel : PageBaseViewModel
         panel.Children.Add(label);
         panel.Children.Add(textBox);
 
-        ContentDialog dialog = new(Tools.Message._contentPresenter);
+        ContentDialog dialog = new(Tools.Message.ContentPresenter);
         
         dialog.SetCurrentValue(ContentDialog.TitleProperty, "Редактирование группы: " + group.Name);
         dialog.SetCurrentValue(ContentDialog.ContentProperty, panel);
@@ -107,7 +107,7 @@ public partial class GroupListViewModel : PageBaseViewModel
         panel.Children.Add(label);
         panel.Children.Add(textBox);
 
-        ContentDialog dialog = new(Tools.Message._contentPresenter);
+        ContentDialog dialog = new(Tools.Message.ContentPresenter);
         
         dialog.SetCurrentValue(ContentDialog.TitleProperty, "Создание группы");
         dialog.SetCurrentValue(ContentDialog.ContentProperty, panel);

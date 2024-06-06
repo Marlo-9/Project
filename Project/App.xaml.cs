@@ -26,6 +26,10 @@ public partial class App : Application
         AuthenticationWindow window = new()
         {
             DataContext = new AuthenticationViewModel(new LoginPage())
+            {
+                Login = "Marlo",
+                Password = "1234"
+            }
         };
         
         window.Show();

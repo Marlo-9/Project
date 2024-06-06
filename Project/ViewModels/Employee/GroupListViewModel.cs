@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Advanced.Tools;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,6 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Project.Models;
 using Project.Tools;
 using Project.ViewModels.Employee.Modal;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
+using Message = System.Windows.Forms.Message;
+using TextBox = Wpf.Ui.Controls.TextBox;
 
 namespace Project.ViewModels.Employee;
 
@@ -37,18 +42,46 @@ public partial class GroupListViewModel : PageBaseViewModel
     [RelayCommand]
     private async Task EditGroup(Group group)
     {
-        EditGroupViewModel vm = new("Редактирование группы: " + group.Name, group, Application.Current.MainWindow!);
+        StackPanel panel = new();
+        TextBox textBox = new()
+        {
+            Name = "NameBox",
+            Text = group.Name
+        };
+        Label label = new()
+        {
+            Content = "Название"
+        };
 
-        vm.EditWindow.ShowDialog();
+        label.SetBinding(Label.TargetProperty, new Binding()
+        {
+            ElementName = textBox.Name
+        });
+
+        panel.Children.Add(label);
+        panel.Children.Add(textBox);
+
+        ContentDialog dialog = new(Tools.Message._contentPresenter);
         
-        if ((bool)vm.EditWindow.DialogResult!)
+        dialog.SetCurrentValue(ContentDialog.TitleProperty, "Редактирование группы: " + group.Name);
+        dialog.SetCurrentValue(ContentDialog.ContentProperty, panel);
+        dialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "Отмена");
+        dialog.SetCurrentValue(ContentDialog.PrimaryButtonTextProperty, "Сохранить");
+        dialog.SetCurrentValue(ContentDialog.MinWidthProperty, (double)420);
+        dialog.SetCurrentValue(ContentDialog.DialogWidthProperty, (double)420);
+        dialog.SetCurrentValue(ContentDialog.DialogHeightProperty, (double)250);
+
+        ContentDialogResult result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
         {
             _parentDataContext.IsLoading = true;
 
-            await DataBase.TryUpdateEntityAsync(vm.Group);
-            
+            group.Name = textBox.Text;
+            await DataBase.TryUpdateEntityAsync(group);
+
             _parentDataContext.IsLoading = false;
-            
+
             await LoadGroups();
         }
     }
@@ -56,18 +89,47 @@ public partial class GroupListViewModel : PageBaseViewModel
     [RelayCommand]
     private async Task CreateGroup()
     {
-        EditGroupViewModel vm = new("Создание группы", new Group(), Application.Current.MainWindow!);
+        StackPanel panel = new();
+        TextBox textBox = new()
+        {
+            Name = "NameBox"
+        };
+        Label label = new()
+        {
+            Content = "Название"
+        };
 
-        vm.EditWindow.ShowDialog();
+        label.SetBinding(Label.TargetProperty, new Binding()
+        {
+            ElementName = textBox.Name
+        });
+
+        panel.Children.Add(label);
+        panel.Children.Add(textBox);
+
+        ContentDialog dialog = new(Tools.Message._contentPresenter);
         
-        if ((bool)vm.EditWindow.DialogResult!)
+        dialog.SetCurrentValue(ContentDialog.TitleProperty, "Создание группы");
+        dialog.SetCurrentValue(ContentDialog.ContentProperty, panel);
+        dialog.SetCurrentValue(ContentDialog.CloseButtonTextProperty, "Отмена");
+        dialog.SetCurrentValue(ContentDialog.PrimaryButtonTextProperty, "Создать");
+        dialog.SetCurrentValue(ContentDialog.MinWidthProperty, (double)420);
+        dialog.SetCurrentValue(ContentDialog.DialogWidthProperty, (double)420);
+        dialog.SetCurrentValue(ContentDialog.DialogMaxHeightProperty, (double)250);
+
+        ContentDialogResult result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
         {
             _parentDataContext.IsLoading = true;
 
-            await DataBase.TryUpdateEntityAsync(vm.Group);
-            
+            await DataBase.TryUpdateEntityAsync(new Group()
+            {
+                Name = textBox.Text
+            });
+
             _parentDataContext.IsLoading = false;
-            
+
             await LoadGroups();
         }
     }
